@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API = process.env.REACT_APP_API_URL || '/api';
+export const API = "https://pashuledger-backend.onrender.com/api";
+
+// ✅ ADD THIS
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
@@ -21,15 +23,16 @@ export const AuthProvider = ({ children }) => {
   const login = async (mobile, password) => {
     const res = await axios.post(`${API}/auth/login`, { mobile, password });
     const { token: t, user: u } = res.data;
+
     localStorage.setItem('pl_token', t);
     localStorage.setItem('pl_user', JSON.stringify(u));
+
     axios.defaults.headers.common['Authorization'] = `Bearer ${t}`;
     setToken(t);
     setUser(u);
     return u;
   };
 
-  // FIX #1: register no longer auto-logs in
   const register = async (name, mobile, password) => {
     const res = await axios.post(`${API}/auth/register`, { name, mobile, password });
     return res.data;
@@ -51,4 +54,3 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
-export { API };
