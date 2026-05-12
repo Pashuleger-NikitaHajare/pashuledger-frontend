@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-export const API = "https://pashuledger-backend.onrender.com/api";
+export const API = `${process.env.REACT_APP_API_URL}/api`;
 
 // ✅ ADD THIS
 const AuthContext = createContext(null);
